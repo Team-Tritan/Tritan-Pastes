@@ -15,6 +15,7 @@ FROM alpine:latest AS runner
 WORKDIR /app
 
 COPY --from=builder /app/main .
+COPY --from=builder /app/.env .
 
 EXPOSE 8069
 
