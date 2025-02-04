@@ -56,13 +56,12 @@ export default function PastebinLanding() {
       <div className="absolute inset-0 bg-gradient-to-br from-black via-indigo-950/50 to-black opacity-75 pointer-events-none" />
 
       <div className="container mx-auto px-4 py-16 relative z-10">
-        <h1 className="text-5xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-indigo-600">
+        <h1 className="text-5xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-indigo-400">
           Tritan Pastes
         </h1>
 
         <p className="text-xl text-center mb-8">
-          Use our pastebin to store and send information or code to other
-          people.
+          Securely share shit with anyone.
         </p>
 
         <div
@@ -73,7 +72,7 @@ export default function PastebinLanding() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="relative group">
               <label htmlFor="code" className="block mb-2 text-indigo-300">
-                Paste Your Stuff
+                Paste Content
               </label>
               <textarea
                 id="code"
@@ -82,7 +81,7 @@ export default function PastebinLanding() {
                 className="w-full min-h-[200px] bg-black/40 border-2 border-indigo-800/50 text-indigo-200 
                 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 
                 transition duration-300 group-hover:border-indigo-600"
-                placeholder="I like men....."
+                placeholder="fxx likes men..... :o"
                 required
               />
               <div className="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-900/10 to-black/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

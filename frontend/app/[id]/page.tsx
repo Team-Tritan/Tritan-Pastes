@@ -123,7 +123,7 @@ export default function PasteView({ params }: PasteViewProps) {
           )}
           {isLoading && (
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Content</h2>
+              <h2 className="text-xl font-semibold">Paste Content</h2>
               <div className="bg-black/40 border-2 border-indigo-800/50 text-indigo-200 rounded-xl p-4 flex items-center justify-center">
                 <Loader className="animate-spin text-indigo-200 w-6 h-6" />
               </div>
@@ -131,7 +131,7 @@ export default function PasteView({ params }: PasteViewProps) {
           )}
           {error && (
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Content</h2>
+              <h2 className="text-xl font-semibold">Paste Content</h2>
               <div className="bg-black/40 border-2 border-indigo-800/50 text-indigo-200 rounded-xl p-4">
                 <p className="text-sm text-indigo-200">{error}</p>
               </div>
@@ -139,7 +139,7 @@ export default function PasteView({ params }: PasteViewProps) {
           )}
           {paste && !isLoading && !isPasswordProtected && (
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Content</h2>
+              <h2 className="text-xl font-semibold">Paste Content</h2>
               <div className="bg-black/40 border-2 border-indigo-800/50 text-indigo-200 rounded-xl p-4">
                 <pre className="whitespace-pre-wrap break-words text-sm">
                   {paste.content}
