@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"errors"
+	"io"
 )
 
 var secretKey []byte
@@ -14,47 +15,62 @@ func SetSecretKey(key string) {
 	secretKey = []byte(key)
 }
 
-func EncryptContent(content string) (string, error) {
+func EncryptContent(plaintext string) (string, error) {
+	if len(secretKey) != 16 && len(secretKey) != 24 && len(secretKey) != 32 {
+		return "", errors.New("invalid secretKey size: must be 16, 24, or 32 bytes")
+	}
+
 	block, err := aes.NewCipher(secretKey)
 	if err != nil {
 		return "", err
 	}
 
-	plaintext := []byte(content)
-	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
-	iv := ciphertext[:aes.BlockSize]
+	nonce := make([]byte, 12)
+	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
+		return "", err
+	}
 
-	_, err = rand.Read(iv)
+	aesGCM, err := cipher.NewGCM(block)
 	if err != nil {
 		return "", err
 	}
 
-	stream := cipher.NewCFBEncrypter(block, iv)
-	stream.XORKeyStream(ciphertext[aes.BlockSize:], plaintext)
+	ciphertext := aesGCM.Seal(nil, nonce, []byte(plaintext), nil)
 
-	return base64.StdEncoding.EncodeToString(ciphertext), nil
+	result := append(nonce, ciphertext...)
+	return base64.StdEncoding.EncodeToString(result), nil
 }
 
 func DecryptContent(encryptedContent string) (string, error) {
-	ciphertext, err := base64.StdEncoding.DecodeString(encryptedContent)
+	if len(secretKey) != 16 && len(secretKey) != 24 && len(secretKey) != 32 {
+		return "", errors.New("invalid secretKey size: must be 16, 24, or 32 bytes")
+	}
+
+	data, err := base64.StdEncoding.DecodeString(encryptedContent)
 	if err != nil {
 		return "", err
 	}
+
+	if len(data) < 12 {
+		return "", errors.New("invalid ciphertext")
+	}
+
+	nonce, ciphertext := data[:12], data[12:]
 
 	block, err := aes.NewCipher(secretKey)
 	if err != nil {
 		return "", err
 	}
 
-	if len(ciphertext) < aes.BlockSize {
-		return "", errors.New("ciphertext too short")
+	aesGCM, err := cipher.NewGCM(block)
+	if err != nil {
+		return "", err
 	}
 
-	iv := ciphertext[:aes.BlockSize]
-	ciphertext = ciphertext[aes.BlockSize:]
+	plaintext, err := aesGCM.Open(nil, nonce, ciphertext, nil)
+	if err != nil {
+		return "", errors.New("decryption failed")
+	}
 
-	stream := cipher.NewCFBDecrypter(block, iv)
-	stream.XORKeyStream(ciphertext, ciphertext)
-
-	return string(ciphertext), nil
+	return string(plaintext), nil
 }
