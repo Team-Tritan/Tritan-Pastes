@@ -29,7 +29,7 @@ export default function PastebinLanding() {
       await fetch("https://ipv4.icanhazip.com")
         .then((res) => res.text())
         .then((ip) => {
-          setIP(ip.split("\n")[0]);
+          setIP(ip);
         });
 
       const response = await fetch("/api/pastes", {
