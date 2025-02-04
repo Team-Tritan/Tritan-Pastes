@@ -159,9 +159,15 @@ export default function PasteView({ params }: PasteViewProps) {
                 This paste was created at {paste.createdAt}.
               </p>
               <div className="bg-black/40 border-2 border-indigo-800/50 text-indigo-200 rounded-xl p-4">
-                <pre className="whitespace-pre-wrap break-words text-sm">
-                  {prettifyJson(paste.content)}
-                </pre>
+                {isJson(paste.content) ? (
+                  <pre className="whitespace-pre-wrap break-words text-sm">
+                    {prettifyJson(paste.content)}
+                  </pre>
+                ) : (
+                  <pre className="whitespace-pre-wrap break-words text-sm">
+                    {paste.content}
+                  </pre>
+                )}
               </div>
             </div>
           )}
