@@ -29,7 +29,7 @@ export default function PastebinLanding() {
       await fetch("https://ip.xvh.lol")
         .then((res) => res.json())
         .then((i) => {
-          setIP(i.data.ip);
+          setIP(i.ip);
         });
 
       const response = await fetch("/api/pastes", {
