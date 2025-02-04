@@ -40,7 +40,7 @@ func createPasteHandler(c *fiber.Ctx) error {
 		})
 	}
 
-	id, err := gonanoid.Generate("abcdefghijklmnopqrstuvwxyz1234567890", 10)
+	id, err := gonanoid.New(15)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.StandardResponse{
 			Status:  fiber.StatusInternalServerError,
