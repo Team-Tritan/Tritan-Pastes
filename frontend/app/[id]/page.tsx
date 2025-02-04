@@ -140,6 +140,9 @@ export default function PasteView({ params }: PasteViewProps) {
           {paste && !isLoading && !isPasswordProtected && (
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">Paste Content</h2>
+              <p className="text-sm text-zinc-400">
+                This paste was created at {paste.createdAt}.
+              </p>
               <div className="bg-black/40 border-2 border-indigo-800/50 text-indigo-200 rounded-xl p-4">
                 <pre className="whitespace-pre-wrap break-words text-sm">
                   {paste.content}

@@ -61,7 +61,7 @@ export default function PastebinLanding() {
         </h1>
 
         <p className="text-xl text-center mb-8">
-          Securely share shit with anyone.
+          Securely share code, text, messages, with anyone.
         </p>
 
         <div
