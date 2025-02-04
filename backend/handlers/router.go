@@ -5,6 +5,7 @@ import (
 )
 
 func SetupRoutes(app *fiber.App) {
+	app.Post("/api/quick", quickPasteHandler)
 	app.Post("/api/pastes", createPasteHandler)
 	app.Get("/api/pastes/:id", getPasteHandler)
 }
