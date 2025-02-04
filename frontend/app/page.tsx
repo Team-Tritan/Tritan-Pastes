@@ -165,15 +165,21 @@ export default function PastebinLanding() {
               </div>
             </div>
 
-            <div className="group">
-              <label className="flex items-center mb-2 text-indigo-300">
+            <div className="group flex items-center mb-4">
+              <span className="mr-3 text-indigo-300">Expire after viewing</span>
+              <label
+                htmlFor="toggleExpire"
+                className="relative inline-block w-10 h-6"
+              >
                 <input
                   type="checkbox"
+                  id="toggleExpire"
+                  className="sr-only peer"
                   checked={expireAfterViewing}
                   onChange={() => setExpireAfterViewing(!expireAfterViewing)}
-                  className="mr-2 w-5 h-5 text-indigo-500 group-hover:text-indigo-400 transition"
                 />
-                Expire after viewing
+                <div className="w-full h-full bg-indigo-800 rounded-full transition-colors duration-300 peer-checked:bg-indigo-600"></div>
+                <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-4"></div>
               </label>
             </div>
 
