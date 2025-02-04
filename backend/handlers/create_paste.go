@@ -40,7 +40,7 @@ func createPasteHandler(c *fiber.Ctx) error {
 		})
 	}
 
-	id, err := gonanoid.New(15)
+	id, err := gonanoid.New(10)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.StandardResponse{
 			Status:  fiber.StatusInternalServerError,
