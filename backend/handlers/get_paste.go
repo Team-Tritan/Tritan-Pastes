@@ -41,8 +41,7 @@ func getPasteHandler(c *fiber.Ctx) error {
 		})
 	}
 
-	// Decrypt the paste content
-	decryptedContent, err := services.DecryptContent(paste.Content) // assuming Content is the encrypted field
+	decryptedContent, err := services.DecryptContent(paste.Content)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.StandardResponse{
 			Status:  fiber.StatusInternalServerError,
