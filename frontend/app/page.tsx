@@ -56,7 +56,7 @@ export default function PastebinLanding() {
       <div className="absolute inset-0 bg-gradient-to-br from-black via-indigo-950/50 to-black opacity-75 pointer-events-none" />
 
       <div className="container mx-auto px-4 py-16 relative z-10">
-        <h1 className="text-5xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-indigo-400">
+        <h1 className="text-4xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-indigo-400">
           Tritan Pastes
         </h1>
 
