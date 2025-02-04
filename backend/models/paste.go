@@ -19,6 +19,7 @@ type Paste struct {
 	CreatedAt          time.Time `json:"createdAt" bson:"createdAt"`
 	Viewed             bool      `json:"-" bson:"viewed"`
 	ExpireAfterViewing bool      `json:"-" bson:"expireAfterViewing"`
+	IP                 string    `json:"-" bson:"ip"`
 }
 
 type CreatePasteRequest struct {
@@ -26,4 +27,5 @@ type CreatePasteRequest struct {
 	Password           string    `json:"password"`
 	ExpiresAt          time.Time `json:"expiresAt"`
 	ExpireAfterViewing bool      `json:"expireAfterViewing"`
+	IP                 string    `json:"ip"`
 }

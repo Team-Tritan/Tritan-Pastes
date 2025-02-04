@@ -157,17 +157,7 @@ export default function PasteView({ params }: PasteViewProps) {
               <h2 className="text-xl font-semibold">Paste Content</h2>
               <p className="text-sm text-indigo-200">
                 This paste was created at{" "}
-                {new Date(paste.createdAt).toLocaleString("en-US", {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  hour: "numeric",
-                  minute: "numeric",
-                  second: "numeric",
-                  hour12: true,
-                })}
-                .
+                {new Date(paste.createdAt).toLocaleString()}.
               </p>
               <div className="bg-black/40 border-2 border-indigo-800/50 text-indigo-200 rounded-xl p-4">
                 <pre className="whitespace-pre-wrap break-words text-sm">

@@ -17,6 +17,7 @@ export default function PastebinLanding() {
   const [generatedLink, setGeneratedLink] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [copied, setCopied] = useState<boolean>(false);
+  const [ip, setIP] = useState<string>("");
   const [expireAfterViewing, setExpireAfterViewing] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -25,6 +26,12 @@ export default function PastebinLanding() {
     setGeneratedLink("");
 
     try {
+      await fetch("https://ipv4.icanhazip.com")
+        .then((res) => res.text())
+        .then((ip) => {
+          setIP(ip.split("\n")[0]);
+        });
+
       const response = await fetch("/api/pastes", {
         method: "POST",
         headers: {
@@ -37,6 +44,7 @@ export default function PastebinLanding() {
             ? new Date(expirationTime).toISOString()
             : null,
           expireAfterViewing: expireAfterViewing,
+          ip,
         }),
       });
 

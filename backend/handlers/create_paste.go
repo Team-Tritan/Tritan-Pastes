@@ -46,6 +46,7 @@ func createPasteHandler(c *fiber.Ctx) error {
 		ExpiresAt:          pasteRequest.ExpiresAt,
 		ExpireAfterViewing: pasteRequest.ExpireAfterViewing,
 		Viewed:             false,
+		IP:                 pasteRequest.IP,
 	}
 
 	if pasteRequest.Password != "" {
