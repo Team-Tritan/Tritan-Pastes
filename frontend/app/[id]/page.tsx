@@ -43,9 +43,31 @@ export default function PasteView({ params }: PasteViewProps) {
   };
 
   const prettifyJson = (jsonStr: string) => {
-    return isJson(jsonStr)
-      ? JSON.stringify(JSON.parse(jsonStr), null, 2)
-      : jsonStr;
+    return JSON.stringify(JSON.parse(jsonStr));
+  };
+
+  const highlightJson = (jsonStr: string) => {
+    return jsonStr
+      .replace(
+        /"(.*?)":/g,
+        `<span class="text-blue-400">"$1"</span>:` // Keys in blue
+      )
+      .replace(
+        /: "(.*?)"/g,
+        `: <span class="text-green-400">"$1"</span>` // Strings in green
+      )
+      .replace(
+        /: (\d+)/g,
+        `: <span class="text-yellow-400">$1</span>` // Numbers in yellow
+      )
+      .replace(
+        /: (true|false)/g,
+        `: <span class="text-purple-400">$1</span>` // Booleans in purple
+      )
+      .replace(
+        /: null/g,
+        `: <span class="text-gray-400">null</span>` // Null in gray
+      );
   };
 
   React.useEffect(() => {
@@ -122,7 +144,7 @@ export default function PasteView({ params }: PasteViewProps) {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-2 mt-2 text-indigo-200 bg-transparent border border-zinc-800 rounded-xl onfocus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                    className="w-full px-4 py-2 mt-2 text-indigo-200 bg-transparent border border-zinc-800 rounded-xl focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600"
                   />
                   <div className="mt-4 flex items-center justify-between">
                     <button
@@ -160,9 +182,20 @@ export default function PasteView({ params }: PasteViewProps) {
                 {new Date(paste.createdAt).toLocaleString()}.
               </p>
               <div className="bg-black/40 border-2 border-indigo-800/50 text-indigo-200 rounded-xl p-4">
-                <pre className="whitespace-pre-wrap break-words text-sm">
-                  {prettifyJson(paste.content)}
-                </pre>
+                {isJson(paste.content) ? (
+                  <pre className="whitespace-pre-wrap break-words text-sm">
+                    <code
+                      className="font-mono"
+                      dangerouslySetInnerHTML={{
+                        __html: highlightJson(prettifyJson(paste.content)),
+                      }}
+                    />
+                  </pre>
+                ) : (
+                  <pre className="whitespace-pre-wrap break-words text-sm">
+                    {paste.content}
+                  </pre>
+                )}
               </div>
             </div>
           )}
