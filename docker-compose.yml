@@ -4,6 +4,7 @@ services:
   backend:
     build:
       context: ./backend
+      target: runner
     ports:
       - "8069:8069"
     environment:
@@ -15,6 +16,7 @@ services:
   frontend:
     build:
       context: ./frontend
+      target: runner
     ports:
       - "3000:3000"
     environment:
