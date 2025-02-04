@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useState, FormEvent } from "react";
-import { UploadCloud, Lock, Clock, Copy, CheckCircle } from "lucide-react";
+import {
+  UploadCloud,
+  Lock,
+  Clock,
+  Copy,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
 
 export default function PastebinLanding() {
   const [code, setCode] = useState<string>("");
@@ -49,6 +56,16 @@ export default function PastebinLanding() {
     navigator.clipboard.writeText(generatedLink);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const clearAllFields = () => {
+    setCode("");
+    setPassword("");
+    setExpirationTime("");
+    setGeneratedLink("");
+    setError("");
+    setCopied(false);
+    setExpireAfterViewing(false);
   };
 
   return (
@@ -160,16 +177,24 @@ export default function PastebinLanding() {
           {generatedLink && (
             <div className="mt-4 bg-indigo-900/70 text-indigo-200 p-3 rounded-xl flex justify-between items-center border border-indigo-800/50 animate-slide-in">
               <span className="truncate max-w-[70%]">{generatedLink}</span>
-              <button
-                onClick={copyToClipboard}
-                className="bg-indigo-700 hover:bg-indigo-600 px-3 py-1 rounded-md transition duration-300 flex items-center"
-              >
-                {copied ? (
-                  <CheckCircle className="w-5 h-5 text-green-400 animate-ping-slow" />
-                ) : (
-                  <Copy className="w-5 h-5" />
-                )}
-              </button>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={copyToClipboard}
+                  className="bg-indigo-700 hover:bg-indigo-600 px-3 py-1 rounded-md transition duration-300 flex items-center"
+                >
+                  {copied ? (
+                    <CheckCircle className="w-5 h-5 text-green-400 animate-ping-slow" />
+                  ) : (
+                    <Copy className="w-5 h-5" />
+                  )}
+                </button>
+                <button
+                  onClick={clearAllFields}
+                  className="bg-red-700 hover:bg-red-600 px-3 py-1 rounded-md transition duration-300 flex items-center"
+                >
+                  <XCircle className="w-5 h-5 text-white" />
+                </button>
+              </div>
             </div>
           )}
         </div>
