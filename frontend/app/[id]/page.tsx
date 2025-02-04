@@ -33,6 +33,21 @@ export default function PasteView({ params }: PasteViewProps) {
     React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
+  const isJson = (str: string) => {
+    try {
+      JSON.parse(str);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const prettifyJson = (jsonStr: string) => {
+    return isJson(jsonStr)
+      ? JSON.stringify(JSON.parse(jsonStr), null, 2)
+      : jsonStr;
+  };
+
   React.useEffect(() => {
     const fetchPaste = async () => {
       try {
@@ -140,12 +155,12 @@ export default function PasteView({ params }: PasteViewProps) {
           {paste && !isLoading && !isPasswordProtected && (
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">Paste Content</h2>
-              <p className="text-sm text-indigo-400">
+              <p className="text-sm text-indigo-200">
                 This paste was created at {paste.createdAt}.
               </p>
               <div className="bg-black/40 border-2 border-indigo-800/50 text-indigo-200 rounded-xl p-4">
                 <pre className="whitespace-pre-wrap break-words text-sm">
-                  {paste.content}
+                  {prettifyJson(paste.content)}
                 </pre>
               </div>
             </div>
