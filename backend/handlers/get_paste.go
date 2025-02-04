@@ -4,11 +4,12 @@ import (
 	"context"
 	"time"
 
-	"github.com/gofiber/fiber/v2"
-	"go.mongodb.org/mongo-driver/bson"
 	"golang.org/x/crypto/bcrypt"
 	"pastes.tritan.gg/v2/models"
 	"pastes.tritan.gg/v2/services"
+
+	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func getPasteHandler(c *fiber.Ctx) error {
@@ -23,16 +24,6 @@ func getPasteHandler(c *fiber.Ctx) error {
 			Message: "This paste does not exist.",
 		})
 	}
-
-	originalContent, err := services.DecryptContent(paste.Content)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(models.StandardResponse{
-			Status:  fiber.StatusInternalServerError,
-			Error:   true,
-			Message: "Failed to decrypt content",
-		})
-	}
-	paste.Content = originalContent
 
 	if paste.ExpireAfterViewing && paste.Viewed {
 		return c.Status(fiber.StatusGone).JSON(models.StandardResponse{
@@ -49,6 +40,17 @@ func getPasteHandler(c *fiber.Ctx) error {
 			Message: "This paste has expired.",
 		})
 	}
+
+	// Decrypt the paste content
+	decryptedContent, err := services.DecryptContent(paste.Content) // assuming Content is the encrypted field
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(models.StandardResponse{
+			Status:  fiber.StatusInternalServerError,
+			Error:   true,
+			Message: "Failed to decrypt paste content",
+		})
+	}
+	paste.Content = decryptedContent
 
 	if len(paste.Password) > 0 {
 		var authRequest struct {
