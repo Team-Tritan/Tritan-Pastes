@@ -15,10 +15,10 @@ type Paste struct {
 	ID                 string    `json:"id" bson:"_id"`
 	Content            string    `json:"content" bson:"content"`
 	Password           []byte    `json:"-" bson:"password,omitempty"`
-	ExpiresAt          time.Time `json:"expiresAt,omitempty" bson:"expiresAt,omitempty"`
+	ExpiresAt          time.Time `json:"-" bson:"expiresAt,omitempty"`
 	CreatedAt          time.Time `json:"createdAt" bson:"createdAt"`
-	Viewed             bool      `json:"viewed" bson:"viewed"`
-	ExpireAfterViewing bool      `json:"expireAfterViewing" bson:"expireAfterViewing"`
+	Viewed             bool      `json:"-" bson:"viewed"`
+	ExpireAfterViewing bool      `json:"-" bson:"expireAfterViewing"`
 }
 
 type CreatePasteRequest struct {
