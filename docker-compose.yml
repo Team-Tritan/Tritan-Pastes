@@ -10,6 +10,7 @@ services:
       - PORT=8069
     networks:
       - app-network
+    restart: unless-stopped
 
   frontend:
     build:
@@ -22,6 +23,7 @@ services:
       - app-network
     depends_on:
       - backend
+    restart: unless-stopped
 
 networks:
   app-network:
