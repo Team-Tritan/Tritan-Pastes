@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import {
   UploadCloud,
   Lock,
@@ -20,18 +20,20 @@ export default function PastebinLanding() {
   const [ip, setIP] = useState<string>("");
   const [expireAfterViewing, setExpireAfterViewing] = useState<boolean>(false);
 
+  useEffect(() => {
+    fetch("https://ip.xvh.lol")
+      .then((res) => res.json())
+      .then((i) => {
+        setIP(i.ip);
+      });
+  }, []);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
     setGeneratedLink("");
 
     try {
-      await fetch("https://ip.xvh.lol")
-        .then((res) => res.json())
-        .then((i) => {
-          setIP(i.ip);
-        });
-
       const response = await fetch("/api/pastes", {
         method: "POST",
         headers: {
