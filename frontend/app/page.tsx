@@ -26,10 +26,10 @@ export default function PastebinLanding() {
     setGeneratedLink("");
 
     try {
-      await fetch("https://ipv4.icanhazip.com")
-        .then((res) => res.text())
-        .then((ip) => {
-          setIP(ip);
+      await fetch("https://ip.xvh.lol")
+        .then((res) => res.json())
+        .then((i) => {
+          setIP(i.ip);
         });
 
       const response = await fetch("/api/pastes", {
@@ -86,8 +86,8 @@ export default function PastebinLanding() {
         </h1>
 
         <p className="text-xl text-center mb-8">
-          Securely share code, text, and messages with anyone. You have
-          the control.
+          Securely share code, text, and messages with anyone. You have the
+          control.
         </p>
 
         <div
