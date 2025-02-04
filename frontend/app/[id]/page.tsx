@@ -43,7 +43,7 @@ export default function PasteView({ params }: PasteViewProps) {
   };
 
   const prettifyJson = (jsonStr: string) => {
-    return JSON.stringify(JSON.parse(jsonStr));
+    return JSON.stringify(JSON.parse(jsonStr), null, 2);
   };
 
   const highlightJson = (jsonStr: string) => {
