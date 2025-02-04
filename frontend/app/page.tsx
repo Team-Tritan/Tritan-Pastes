@@ -82,11 +82,12 @@ export default function PastebinLanding() {
 
       <div className="container mx-auto px-4 py-16 relative z-10">
         <h1 className="text-4xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-indigo-400">
-          Tritan Pastes
+          Encrypted Pastes
         </h1>
 
         <p className="text-xl text-center mb-8">
-          Securely share code, text, messages, with anyone.
+          Securely share code, text, and messages with anyone. You have
+          the control.
         </p>
 
         <div
