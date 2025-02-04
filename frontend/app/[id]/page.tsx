@@ -56,23 +56,23 @@ export default function PasteView({ params }: PasteViewProps) {
     return jsonStr
       .replace(
         /"(.*?)":/g,
-        `<span class="text-blue-400">"$1"</span>:` // Keys in blue
+        `<span class="text-purple-500 font-medium">"$1"</span>:` // Keys in purple
       )
       .replace(
         /: "(.*?)"/g,
-        `: <span class="text-green-400">"$1"</span>` // Strings in green
+        `: <span class="text-purple-300">"$1"</span>` // Strings in light purple
       )
       .replace(
         /: (\d+)/g,
-        `: <span class="text-yellow-400">$1</span>` // Numbers in yellow
+        `: <span class="text-purple-400">$1</span>` // Numbers in darker purple
       )
       .replace(
         /: (true|false)/g,
-        `: <span class="text-purple-400">$1</span>` // Booleans in purple
+        `: <span class="text-purple-500">$1</span>` // Booleans in deep purple
       )
       .replace(
         /: null/g,
-        `: <span class="text-gray-400">null</span>` // Null in gray
+        `: <span class="text-gray-500">null</span>` // Null in gray
       );
   };
 
@@ -211,7 +211,7 @@ export default function PasteView({ params }: PasteViewProps) {
               </h2>
               <p className="text-sm text-gray-300">
                 This paste was created at{" "}
-                {new Date(paste.createdAt).toLocaleString()}.
+                {new Date(paste.createdAt).toLocaleString()}
               </p>
               <div className="bg-black/30 border-2 border-violet-700/50 text-gray-300 rounded-xl p-4">
                 {isJson(paste.content) ? (
