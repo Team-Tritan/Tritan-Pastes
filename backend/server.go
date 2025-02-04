@@ -15,16 +15,21 @@ import (
 func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found")
+	} else {
+		log.Println("Environment variables loaded successfully")
 	}
 
 	client, err := services.ConnectToMongoDB()
 	if err != nil {
 		log.Fatalf("Failed to connect to MongoDB: %v", err)
 	}
+
 	defer client.Disconnect(context.Background())
 
-	app := fiber.New()
+	secretKey := os.Getenv("SECRET_KEY")
+	services.SetSecretKey(secretKey)
 
+	app := fiber.New()
 	handlers.SetupRoutes(app)
 
 	port := os.Getenv("PORT")
