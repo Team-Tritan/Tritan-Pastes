@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
+	gonanoid "github.com/matoous/go-nanoid/v2"
 	"golang.org/x/crypto/bcrypt"
 	"pastes.tritan.gg/v2/models"
 	"pastes.tritan.gg/v2/services"
@@ -39,14 +40,22 @@ func createPasteHandler(c *fiber.Ctx) error {
 		})
 	}
 
+	id, err := gonanoid.Generate("abcdefghijklmnopqrstuvwxyz1234567890", 10)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(models.StandardResponse{
+			Status:  fiber.StatusInternalServerError,
+			Error:   true,
+			Message: "Failed to generate paste ID",
+		})
+	}
+
 	paste := models.Paste{
-		ID:                 uuid.New().String(),
+		ID:                 id,
 		Content:            encryptedContent,
 		CreatedAt:          time.Now(),
 		ExpiresAt:          pasteRequest.ExpiresAt,
 		ExpireAfterViewing: pasteRequest.ExpireAfterViewing,
 		Viewed:             false,
-		IP:                 pasteRequest.IP,
 	}
 
 	if pasteRequest.Password != "" {

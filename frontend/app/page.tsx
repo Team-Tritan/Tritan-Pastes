@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, FormEvent, useEffect } from "react";
+import React, { useState, FormEvent } from "react";
 import {
   UploadCloud,
   Lock,
@@ -17,16 +17,7 @@ export default function PastebinLanding() {
   const [generatedLink, setGeneratedLink] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [copied, setCopied] = useState<boolean>(false);
-  const [ip, setIP] = useState<string>("");
   const [expireAfterViewing, setExpireAfterViewing] = useState<boolean>(false);
-
-  useEffect(() => {
-    fetch("https://ip.xvh.lol")
-      .then((res) => res.json())
-      .then((i) => {
-        setIP(i.ip);
-      });
-  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -46,7 +37,6 @@ export default function PastebinLanding() {
             ? new Date(expirationTime).toISOString()
             : null,
           expireAfterViewing: expireAfterViewing,
-          ip,
         }),
       });
 
