@@ -1,6 +1,6 @@
 "use client";
-import React, { use } from "react";
 import { Loader } from "lucide-react";
+import React, { use } from "react";
 
 interface Paste {
   id: string;

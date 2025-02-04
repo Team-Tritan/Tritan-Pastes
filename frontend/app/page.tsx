@@ -1,16 +1,31 @@
 "use client";
 
-import React, { useState, FormEvent } from "react";
 import {
-  UploadCloud,
-  Lock,
+  CheckCircle,
   Clock,
   Copy,
-  CheckCircle,
+  Lock,
+  UploadCloud,
   XCircle,
 } from "lucide-react";
+import { FormEvent, useEffect, useState } from "react";
+
+const quotes = [
+  "femboys.... mmmgh",
+  "you can't fix me",
+  "i love you dada",
+  "paste all over me",
+  "meow :3",
+  "i'm just a foxgirl",
+  "please avenge me",
+];
+
+const getRandomQuote = () => {
+  return quotes[Math.floor(Math.random() * quotes.length)];
+};
 
 export default function PastebinLanding() {
+  const [pageQuote, setPageQuote] = useState<string>("");
   const [code, setCode] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [expirationTime, setExpirationTime] = useState<string>("");
@@ -18,6 +33,10 @@ export default function PastebinLanding() {
   const [error, setError] = useState<string>("");
   const [copied, setCopied] = useState<boolean>(false);
   const [expireAfterViewing, setExpireAfterViewing] = useState<boolean>(false);
+
+  useEffect(() => {
+    setPageQuote(getRandomQuote());
+  }, []); // Set the random quote on client mount
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -99,7 +118,7 @@ export default function PastebinLanding() {
                 className="w-full min-h-[200px] bg-black/40 border-2 border-indigo-800/50 text-indigo-200 
                 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 
                 transition duration-300 group-hover:border-indigo-600"
-                placeholder="femboys.... mmmgh"
+                placeholder={pageQuote}
                 required
               />
               <div className="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-900/10 to-black/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
