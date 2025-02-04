@@ -1,6 +1,8 @@
 "use client";
 import React, { use } from "react";
 import { Loader } from "lucide-react";
+import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
+import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 interface Paste {
   id: string;
@@ -81,6 +83,7 @@ export default function PasteView({ params }: PasteViewProps) {
     e.preventDefault();
     setError("");
     setIsLoading(true);
+
     try {
       const response = await fetch(`/api/pastes/${id}`, {
         method: "POST",
@@ -158,10 +161,19 @@ export default function PasteView({ params }: PasteViewProps) {
               <p className="text-sm text-indigo-200">
                 This paste was created at {paste.createdAt}.
               </p>
-              <div className="bg-black/40 border-2 border-indigo-800/50 text-indigo-200 rounded-xl p-4">
+              <div className="bg-black/40 border-2 border-indigo-800/50  rounded-xl p-4">
                 {isJson(paste.content) ? (
                   <pre className="whitespace-pre-wrap break-words text-sm">
-                    {prettifyJson(paste.content)}
+                    <SyntaxHighlighter
+                      language="json"
+                      style={docco}
+                      customStyle={{
+                        whiteSpace: "pre-wrap",
+                        wordBreak: "break-word",
+                      }}
+                    >
+                      {prettifyJson(paste.content)}
+                    </SyntaxHighlighter>
                   </pre>
                 ) : (
                   <pre className="whitespace-pre-wrap break-words text-sm">
