@@ -4,7 +4,7 @@ import { JetBrains_Mono } from "next/font/google";
 const inter = JetBrains_Mono({ subsets: ["latin"], weight: "400" });
 
 import { motion } from "framer-motion";
-import { Loader } from "lucide-react";
+import { Loader, Maximize2, Minimize2 } from "lucide-react";
 import React, { use } from "react";
 import ShootingStarsBackground from "../stars";
 
@@ -38,6 +38,7 @@ export default function PasteView({ params }: PasteViewProps) {
   const [isPasswordProtected, setIsPasswordProtected] =
     React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [isExpanded, setIsExpanded] = React.useState<boolean>(false);
 
   const isJson = (str: string) => {
     try {
@@ -142,19 +143,19 @@ export default function PasteView({ params }: PasteViewProps) {
       className={`${inter.className} min-h-screen bg-transparent text-gray-300 flex items-center justify-center relative`}
     >
       <ShootingStarsBackground />
-      {/* Removed preset gradient background */}
 
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
-        className="container mx-auto px-4 py-16 relative z-10"
+        className={`container mx-auto px-4 py-16 relative z-10 ${
+          isExpanded ? "max-w-full/2" : "max-w-2xl"
+        }`}
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.5 }}
-          className="max-w-2xl mx-auto border border-violet-500/70 rounded-2xl shadow-lg shadow-violet-900/50 p-8 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl"
         >
           {isPasswordProtected && (
             <form onSubmit={handlePasswordSubmit}>
@@ -206,9 +207,21 @@ export default function PasteView({ params }: PasteViewProps) {
           )}
           {paste && !isLoading && !isPasswordProtected && (
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold text-gray-300">
-                Paste Content
-              </h2>
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl font-semibold text-gray-300">
+                  Paste Content
+                </h2>
+                <button
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className="bg-zinc-800 text-gray-300 rounded-full p-2"
+                >
+                  {isExpanded ? (
+                    <Minimize2 className="w-5 h-5" />
+                  ) : (
+                    <Maximize2 className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
               <p className="text-sm text-gray-300">
                 This paste was created at{" "}
                 {new Date(paste.createdAt).toLocaleString()}
