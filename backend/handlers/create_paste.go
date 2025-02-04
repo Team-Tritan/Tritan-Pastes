@@ -91,13 +91,22 @@ func quickPasteHandler(c *fiber.Ctx) error {
 		})
 	}
 
+	encryptedContent, err := services.EncryptContent(content)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(models.StandardResponse{
+			Status:  fiber.StatusInternalServerError,
+			Error:   true,
+			Message: "Failed to encrypt content",
+		})
+	}
+
 	paste := models.Paste{
 		ID:        uuid.New().String(),
-		Content:   content,
+		Content:   encryptedContent,
 		CreatedAt: time.Now(),
 	}
 
-	_, err := services.Collection.InsertOne(context.Background(), paste)
+	_, err = services.Collection.InsertOne(context.Background(), paste)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.StandardResponse{
 			Status:  fiber.StatusInternalServerError,
