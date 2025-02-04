@@ -1,5 +1,9 @@
 "use client";
 
+import { JetBrains_Mono } from "next/font/google";
+const inter = JetBrains_Mono({ subsets: ["latin"], weight: "400" });
+
+import { motion } from "framer-motion";
 import {
   CheckCircle,
   Clock,
@@ -9,6 +13,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
+import ShootingStarsBackground from "./stars";
 
 const quotes = [
   "femboys.... mmmgh",
@@ -36,7 +41,7 @@ export default function PastebinLanding() {
 
   useEffect(() => {
     setPageQuote(getRandomQuote());
-  }, []); // Set the random quote on client mount
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -88,11 +93,21 @@ export default function PastebinLanding() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-indigo-200 flex items-center justify-center">
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-indigo-950/50 to-black opacity-75 pointer-events-none" />
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1 }}
+      className={`${inter.className} min-h-screen bg-transparent text-gray-300 flex items-center justify-center`}
+    >
+      <ShootingStarsBackground />
 
-      <div className="container mx-auto px-4 py-16 relative z-10">
-        <h1 className="text-4xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-indigo-400">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="container mx-auto px-4 py-16 relative z-10"
+      >
+        <h1 className="text-4xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-violet-400">
           Encrypted Pastes
         </h1>
 
@@ -101,36 +116,32 @@ export default function PastebinLanding() {
           control.
         </p>
 
-        <div
-          className="max-w-2xl mx-auto bg-black/70 border border-indigo-800/50 rounded-2xl shadow-2xl shadow-indigo-900/50 p-8 
-        transform transition-all duration-300 hover:scale-[1.02] hover:shadow-indigo-600/50 
-        animate-fade-in"
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.5 }}
+          className="max-w-2xl mx-auto border border-violet-500/70 rounded-2xl shadow-lg shadow-violet-900/50 p-8 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl"
         >
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="relative group">
-              <label htmlFor="code" className="block mb-2 text-indigo-300">
-                Paste Content
-              </label>
               <textarea
                 id="code"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                className="w-full min-h-[200px] bg-black/40 border-2 border-indigo-800/50 text-indigo-200 
-                rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 
-                transition duration-300 group-hover:border-indigo-600"
+                className="w-full min-h-[200px] bg-gray-900/30 border-2 border-violet-700/50 text-gray-300 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-violet-500 transition duration-300 group-hover:border-violet-400"
                 placeholder={pageQuote}
                 required
               />
-              <div className="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-900/10 to-black/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 -z-10 bg-gradient-to-br from-violet-800/10 to-gray-700/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="group">
                 <label
                   htmlFor="password"
-                  className="flex items-center mb-2 text-indigo-300"
+                  className="flex items-center mb-2 text-violet-200"
                 >
-                  <Lock className="mr-2 w-5 h-5 text-indigo-500 group-hover:text-indigo-400 transition" />
+                  <Lock className="mr-2 w-5 h-5 text-violet-500 group-hover:text-violet-400 transition" />
                   Optional Password
                 </label>
                 <input
@@ -138,9 +149,7 @@ export default function PastebinLanding() {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-black/40 border-2 border-indigo-800/50 text-indigo-200 
-                  rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500
-                  transition duration-300 group-hover:border-indigo-600"
+                  className="w-full bg-gray-900/30 border-2 border-violet-700/50 text-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-violet-500 transition duration-300 group-hover:border-violet-400"
                   placeholder="Secure your paste"
                 />
               </div>
@@ -148,9 +157,9 @@ export default function PastebinLanding() {
               <div className="group">
                 <label
                   htmlFor="expiration"
-                  className="flex items-center mb-2 text-indigo-300"
+                  className="flex items-center mb-2 text-violet-200"
                 >
-                  <Clock className="mr-2 w-5 h-5 text-indigo-500 group-hover:text-indigo-400 transition" />
+                  <Clock className="mr-2 w-5 h-5 text-violet-500 group-hover:text-violet-400 transition" />
                   Expiration
                 </label>
                 <input
@@ -158,15 +167,13 @@ export default function PastebinLanding() {
                   id="expiration"
                   value={expirationTime}
                   onChange={(e) => setExpirationTime(e.target.value)}
-                  className="w-full bg-black/40 border-2 border-indigo-800/50 text-indigo-200 
-                  rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500
-                  transition duration-300 group-hover:border-indigo-600"
+                  className="w-full bg-gray-900/30 border-2 border-violet-700/50 text-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-violet-500 transition duration-300 group-hover:border-violet-400"
                 />
               </div>
             </div>
 
             <div className="group flex items-center mb-4">
-              <span className="mr-3 text-indigo-300">Expire after viewing</span>
+              <span className="mr-3 text-violet-200">Expire after viewing</span>
               <label
                 htmlFor="toggleExpire"
                 className="relative inline-block w-10 h-6"
@@ -178,35 +185,42 @@ export default function PastebinLanding() {
                   checked={expireAfterViewing}
                   onChange={() => setExpireAfterViewing(!expireAfterViewing)}
                 />
-                <div className="w-full h-full bg-indigo-800 rounded-full transition-colors duration-300 peer-checked:bg-indigo-600"></div>
+                <div className="w-full h-full bg-violet-700 rounded-full transition-colors duration-300 peer-checked:bg-violet-600"></div>
                 <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-4"></div>
               </label>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-3 rounded-xl 
-              transition duration-300 flex items-center justify-center 
-              transform hover:scale-[1.02] active:scale-[0.98]
-              shadow-lg hover:shadow-indigo-500/50 active:shadow-none"
+              className="w-full bg-violet-700 hover:bg-violet-600 text-white font-bold py-3 rounded-xl transition duration-300 flex items-center justify-center transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-violet-500/50 active:shadow-none"
             >
               <UploadCloud className="mr-2 animate-bounce-slow" /> Create Paste
             </button>
           </form>
 
           {error && (
-            <div className="mt-4 bg-red-900/70 text-red-300 p-3 rounded-xl animate-shake border border-red-800/50">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+              className="mt-4 bg-pink-700/70 text-gray-200/90 p-3 rounded-xl animate-shake border border-pink-800/50"
+            >
               {error}
-            </div>
+            </motion.div>
           )}
 
           {generatedLink && (
-            <div className="mt-4 bg-indigo-900/70 text-indigo-200 p-3 rounded-xl flex justify-between items-center border border-indigo-800/50 animate-slide-in">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.8 }}
+              className="mt-4 bg-violet-900/70 text-gray-300 p-3 rounded-xl flex justify-between items-center border border-violet-700/50 animate-slide-in"
+            >
               <span className="truncate max-w-[70%]">{generatedLink}</span>
               <div className="flex items-center space-x-2">
                 <button
                   onClick={copyToClipboard}
-                  className="bg-indigo-700 hover:bg-indigo-600 px-3 py-1 rounded-md transition duration-300 flex items-center"
+                  className="bg-violet-700 hover:bg-violet-600 px-3 py-1 rounded-md transition duration-300 flex items-center"
                 >
                   {copied ? (
                     <CheckCircle className="w-5 h-5 text-green-400 animate-ping-slow" />
@@ -216,15 +230,30 @@ export default function PastebinLanding() {
                 </button>
                 <button
                   onClick={clearAllFields}
-                  className="bg-indigo-700 hover:bg-indigo-600 px-3 py-1 rounded-md transition duration-300 flex items-center"
+                  className="bg-violet-700 hover:bg-violet-600 px-3 py-1 rounded-md transition duration-300 flex items-center"
                 >
                   <XCircle className="w-5 h-5 text-white" />
                 </button>
               </div>
-            </div>
+            </motion.div>
           )}
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+      <motion.footer
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.9 }}
+        className="absolute bottom-4 text-sm w-full text-center text-[#725fdf]"
+      >
+        <a
+          href="https://f0rk.systems/reso/tools_quickpost_bin"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:text-[#a78bfa] transition-colors"
+        >
+          CLI Tool Available
+        </a>
+      </motion.footer>
+    </motion.div>
   );
 }

@@ -11,6 +11,7 @@
   "dependencies": {
     "@types/react-syntax-highlighter": "^15.5.13",
     "critters": "^0.0.25",
+    "framer-motion": "^12.0.11",
     "lucide-react": "^0.474.0",
     "next": "15.1.6",
     "postcss": "^8",
