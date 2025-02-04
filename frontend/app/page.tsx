@@ -190,7 +190,7 @@ export default function PastebinLanding() {
                 </button>
                 <button
                   onClick={clearAllFields}
-                  className="bg-red-700 hover:bg-red-600 px-3 py-1 rounded-md transition duration-300 flex items-center"
+                  className="bg-indigo-700 hover:bg-indigo-600 px-3 py-1 rounded-md transition duration-300 flex items-center"
                 >
                   <XCircle className="w-5 h-5 text-white" />
                 </button>
