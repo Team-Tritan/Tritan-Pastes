@@ -12,8 +12,8 @@ Tritan Pastes is a web application that allows users to securely share code, tex
 ### Clone the Repository
 
 ```sh
-git clone https://github.com/your-username/tritan-pastes.git
-cd tritan-pastes
+git clone https://github.com/Team-Tritan/Tritan-Pastes.git
+cd Tritan-Pastes/
 ```
 
 ### Environment Variables
