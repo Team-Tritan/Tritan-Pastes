@@ -1,0 +1,5 @@
+vendor
+tmp
+log
+.git
+*.log
