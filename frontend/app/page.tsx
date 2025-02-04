@@ -99,7 +99,7 @@ export default function PastebinLanding() {
                 className="w-full min-h-[200px] bg-black/40 border-2 border-indigo-800/50 text-indigo-200 
                 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 
                 transition duration-300 group-hover:border-indigo-600"
-                placeholder="fxx likes men..... :o"
+                placeholder="femboys.... mmmgh"
                 required
               />
               <div className="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-900/10 to-black/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
