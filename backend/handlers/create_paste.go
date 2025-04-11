@@ -108,7 +108,7 @@ func quickPasteHandler(c *fiber.Ctx) error {
 		})
 	}
 
-	id, err := gonanoid.New(10)
+	id, err := gonanoid.New(20)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.StandardResponse{
 			Status:  fiber.StatusInternalServerError,
@@ -121,6 +121,7 @@ func quickPasteHandler(c *fiber.Ctx) error {
 		ID:        id,
 		Content:   encryptedContent,
 		CreatedAt: time.Now(),
+		ExpiresAt: time.Now().Add(30 * 24 * time.Hour),
 	}
 
 	_, err = services.Collection.InsertOne(context.Background(), paste)
