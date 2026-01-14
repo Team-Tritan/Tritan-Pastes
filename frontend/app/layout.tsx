@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import PlausibleProvider from "next-plausible";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,12 +24,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <PlausibleProvider
+      domain="tritan.gg"
+      customDomain="https://bin.tritan.gg"
+      selfHosted={true}
+      trackLocalhost={true}
+      trackOutboundLinks={true}
+      enabled={true}
+    >
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          {children}
+        </body>
+      </html>
+    </PlausibleProvider>
   );
 }
