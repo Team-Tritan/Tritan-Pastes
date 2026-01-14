@@ -13,7 +13,7 @@
     "critters": "^0.0.25",
     "framer-motion": "^12.0.11",
     "lucide-react": "^0.474.0",
-    "next": "15.1.6",
+    "next": "15.1.11",
     "next-plausible": "^3.12.5",
     "postcss": "^8",
     "react": "^19.0.0",
