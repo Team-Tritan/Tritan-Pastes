@@ -1,30 +1,64 @@
 services:
-  backend:
+  migrations:
     build:
-      context: ./backend
+      context: .
+      dockerfile: Dockerfile
       target: runner
-    ports:
-      - "8069:8069"
+      args:
+        - DATABASE_URL
+        - SECRET_KEY
+    entrypoint: ["bun", "run", "db:migrate"]
     environment:
-      - PORT=8069
-    networks:
-      - app-network
-    restart: unless-stopped
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/tritan_pastes
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
 
-  frontend:
+  web:
     build:
-      context: ./frontend
+      context: .
+      dockerfile: Dockerfile
       target: runner
+      args:
+        - DATABASE_URL
+        - SECRET_KEY
     ports:
       - "3000:3000"
     environment:
-      - PORT=3000
-    networks:
-      - app-network
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/tritan_pastes
+      - SECRET_KEY=${SECRET_KEY}
     depends_on:
-      - backend
+      migrations:
+        condition: service_completed_successfully
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
-networks:
-  app-network:
-    driver: bridge
+  db:
+    image: postgres:18-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=tritan_pastes
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tritan_pastes"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1G
+
+volumes:
+  postgres_data:
