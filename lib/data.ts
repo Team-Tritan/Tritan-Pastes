@@ -9,7 +9,7 @@ export async function getCachedPaste(id: string) {
   cacheLife({
     stale: 3600,
     revalidate: 7200,
-    expire: 86400 * 30, // 30 days
+    expire: 86400 * 30,
   });
 
   const paste = await db.query.pastes.findFirst({

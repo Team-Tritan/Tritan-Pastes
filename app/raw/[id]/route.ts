@@ -13,7 +13,7 @@ async function getRawContent(id: string, passwordAttempt?: string | null) {
   cacheLife({
     stale: 3600,
     revalidate: 7200,
-    expire: 86400 * 30, // 30 days
+    expire: 86400 * 30,
   });
 
   const paste = await db.query.pastes.findFirst({
@@ -58,7 +58,6 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   const result = await getRawContent(id, password);
 
   if (result.status === 404 && result.message === "Paste Expired") {
-    // Lazily clean up expired pastes without blocking the request
     after(async () => {
       try {
         await db.delete(pastes).where(eq(pastes.id, id));

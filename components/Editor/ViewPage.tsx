@@ -47,7 +47,6 @@ async function ServerFetch({ id, password }: { id: string; password?: string }) 
   }
 
   if (paste.expiresAt && new Date(paste.expiresAt) < new Date()) {
-    // Delete expired paste and remove from cache lazily after response
     after(async () => {
       await db.delete(pastes).where(eq(pastes.id, id));
       revalidateTag(`paste-${id}`, "max");

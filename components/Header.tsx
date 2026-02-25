@@ -5,7 +5,6 @@ import { Settings, ChevronDown, FileText, UploadCloud, Copy, CheckCircle } from 
 import Link from "next/link";
 import OptionsDropdown from "./Editor/OptionsDropdown";
 
-// Editor Header Variant
 interface EditorHeaderProps {
   variant: "editor";
   lineCount: number;
@@ -24,7 +23,6 @@ interface EditorHeaderProps {
   onSubmit: () => void;
 }
 
-// Viewer Header Variant
 interface ViewerHeaderProps {
   variant: "viewer";
   lineCount: number;
@@ -34,7 +32,6 @@ interface ViewerHeaderProps {
   onCopyClick: () => void;
 }
 
-// Simple Header Variant (for PasswordForm, 404 pages, etc.)
 interface SimpleHeaderProps {
   variant: "simple";
 }
@@ -180,7 +177,6 @@ export default function Header(props: HeaderProps) {
     );
   }
 
-  // Simple variant (default)
   return (
     <header className="flex items-center justify-between border-b border-zinc-800 px-5 py-3">
         <Link href="/" className="flex items-center gap-1.5 transition-colors hover:opacity-80">
