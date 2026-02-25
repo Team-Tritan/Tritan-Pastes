@@ -1,39 +1,55 @@
 # Tritan Pastes
 
-Tritan Pastes is a web application that allows users to securely share code, text, and messages with anyone. The application consists of a frontend built with Next.js and a backend built with Go and Fiber. The project is containerized using Docker and can be easily deployed using Docker Compose.
+A self-hosted pastebin with AES-256 encryption, password protection, expiration, and syntax highlighting for 23 languages.
 
-## Prerequisites
-
-- Docker
-- Docker Compose
+**Stack:** Next.js · Drizzle ORM · PostgreSQL 18 · Bun · Docker
 
 ## Getting Started
 
-### Clone the Repository
-
 ```sh
 git clone https://github.com/Team-Tritan/Tritan-Pastes.git
-cd Tritan-Pastes/
+cd Tritan-Pastes
 ```
 
-### Environment Variables
+Create a `.env` file:
 
-Create a `.env` file in the backend directory by copying the example file:
+```sh
+DATABASE_URL=postgres://tritan:tritan@db:5432/pastes
+SECRET_KEY=your-secret-key-here
+```
 
-`cp backend/.env.example backend/.env`
+Build and start:
 
-Update the `.env` file with your MongoDB URI and other necessary environment variables.
+```sh
+docker compose up --build
+```
 
-### Build and Run the Application
+The app will be available at `http://localhost:3000`. Database migrations run automatically on startup.
 
-Use Docker Compose to build and run the application:
+## Features
 
-`docker-compose up --build`
+- AES-256 encrypted paste content
+- Optional password protection
+- Expiration dates and burn-after-read
+- Syntax highlighting (23 languages, detected from file extension)
+- File import via drag-and-drop or `Ctrl+O`
+- Raw paste endpoint at `/:id/raw`
+- CLI-friendly API
 
-This command will build the Docker images for the frontend and backend services and start the containers.
+## API
 
-### Access the Application
+**Create a paste**
 
-- Frontend: http://localhost:3000
+```sh
+curl -X POST http://localhost:3000/api/quick \
+  -H "Content-Type: application/json" \
+  -d '{"content": "hello world"}'
+```
 
-- Backend: http://localhost:8069
+**View raw content**
+
+```sh
+curl http://localhost:3000/raw/:id
+# Password-protected:
+curl http://localhost:3000/raw/:id?p=yourpassword
+```
