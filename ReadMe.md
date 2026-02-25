@@ -19,7 +19,7 @@ SECRET_KEY=your-secret-key-here
 ```
 
 > [!NOTE]
-> If deploying with the [provided compose file](https://github.com/Team-Tritan/Tritan-Pastes/blob/main/docker-compose.yml), `DATABASE_URL` is already configured. You only need to set `SECRET_KEY`:
+> If deploying with the [provided compose file](docker-compose.yml), `DATABASE_URL` is already configured. You only need to set `SECRET_KEY`:
 > ```sh
 > openssl rand -hex 16
 > ```
