@@ -62,6 +62,9 @@ export default function Editor() {
   const [optionsOpen, setOptionsOpen] = useState<boolean>(false);
   const [fileName, setFileName] = useState<string>("");
 
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const dragCounterRef = useRef<number>(0);
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const lineNumbersRef = useRef<HTMLDivElement>(null);
 
@@ -132,22 +135,46 @@ export default function Editor() {
     setFileName("");
   }, []);
 
+  const readFile = useCallback((file: File) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setCode(event.target?.result as string);
+      setFileName(file.name);
+    };
+    reader.onerror = () => setError("Failed to read file");
+    reader.readAsText(file);
+  }, []);
+
   const handleFileImport = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const text = event.target?.result as string;
-      setCode(text);
-      setFileName(file.name);
-    };
-    reader.onerror = () => {
-      setError("Failed to read file");
-    };
-    reader.readAsText(file);
+    readFile(file);
     e.target.value = "";
+  }, [readFile]);
+
+  const handleDragEnter = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    dragCounterRef.current++;
+    if (e.dataTransfer.items.length > 0) setIsDragging(true);
   }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    dragCounterRef.current--;
+    if (dragCounterRef.current === 0) setIsDragging(false);
+  }, []);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    dragCounterRef.current = 0;
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) readFile(file);
+  }, [readFile]);
 
   const handleTextareaScroll = useCallback(() => {
     if (lineNumbersRef.current && textareaRef.current) {
@@ -168,7 +195,18 @@ export default function Editor() {
   }, []);
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-zinc-950 font-mono text-zinc-400">
+    <div
+      className="relative flex h-screen flex-col overflow-hidden bg-zinc-950 font-mono text-zinc-400"
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+    >
+      {isDragging && (
+        <div className="pointer-events-none absolute inset-0 z-50 flex items-center justify-center border-2 border-dashed border-zinc-600 bg-zinc-950/90">
+          <p className="text-sm text-zinc-400">drop file to import</p>
+        </div>
+      )}
       <Header
         variant="editor"
         lineCount={lineCount}
