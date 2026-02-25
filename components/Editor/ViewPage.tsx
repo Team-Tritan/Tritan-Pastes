@@ -78,6 +78,7 @@ async function ServerFetch({ id, password }: { id: string; password?: string }) 
         paste={{
           id: paste.id,
           content: decryptedContent,
+          language: paste.language ?? null,
           createdAt: paste.createdAt.toISOString(),
           expiresAt: paste.expiresAt?.toISOString(),
         }}

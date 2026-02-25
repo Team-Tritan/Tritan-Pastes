@@ -3,12 +3,56 @@
 import { useState, useRef, useCallback, useMemo } from "react";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { Refractor, registerLanguage } from "react-refractor";
+import bash from "refractor/bash";
+import c from "refractor/c";
+import cpp from "refractor/cpp";
+import csharp from "refractor/csharp";
+import css from "refractor/css";
+import go from "refractor/go";
+import java from "refractor/java";
+import javascript from "refractor/javascript";
 import json from "refractor/json";
+import jsx from "refractor/jsx";
+import kotlin from "refractor/kotlin";
+import markdown from "refractor/markdown";
+import markup from "refractor/markup";
+import php from "refractor/php";
+import python from "refractor/python";
+import ruby from "refractor/ruby";
+import rust from "refractor/rust";
+import sql from "refractor/sql";
+import swift from "refractor/swift";
+import toml from "refractor/toml";
+import tsx from "refractor/tsx";
+import typescript from "refractor/typescript";
+import yaml from "refractor/yaml";
 import { Paste } from "@/lib/types/paste";
 import Header from "@/components/Header";
 import Footer from "../Footer";
 
+registerLanguage(bash);
+registerLanguage(c);
+registerLanguage(cpp);
+registerLanguage(csharp);
+registerLanguage(css);
+registerLanguage(go);
+registerLanguage(java);
+registerLanguage(javascript);
 registerLanguage(json);
+registerLanguage(jsx);
+registerLanguage(kotlin);
+registerLanguage(markdown);
+registerLanguage(markup);
+registerLanguage(php);
+registerLanguage(python);
+registerLanguage(ruby);
+registerLanguage(rust);
+registerLanguage(sql);
+registerLanguage(swift);
+registerLanguage(toml);
+registerLanguage(tsx);
+registerLanguage(typescript);
+registerLanguage(yaml);
 
 interface PasteViewerProps {
   paste: Paste;
@@ -19,19 +63,26 @@ export default function PasteViewer({ paste }: PasteViewerProps) {
   const lineNumbersRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const isJson = useCallback((str: string) => {
+  const tryParseJson = useCallback((str: string) => {
     try {
-      JSON.parse(str);
-      return true;
+      return JSON.stringify(JSON.parse(str), null, 2);
     } catch {
-      return false;
+      return null;
     }
   }, []);
 
-  const prettifyJson = useCallback(
-    (jsonStr: string) => JSON.stringify(JSON.parse(jsonStr), null, 2),
-    [],
-  );
+  // Resolve language: stored value wins; fall back to JSON detection for legacy pastes
+  const { language, displayContent } = useMemo(() => {
+    if (paste.language) {
+      const pretty = paste.language === "json" ? tryParseJson(paste.content) : null;
+      return { language: paste.language, displayContent: pretty ?? paste.content };
+    }
+    const pretty = tryParseJson(paste.content);
+    if (pretty !== null) {
+      return { language: "json", displayContent: pretty };
+    }
+    return { language: null, displayContent: paste.content };
+  }, [paste.language, paste.content, tryParseJson]);
 
   const copyToClipboard = useCallback(() => {
     navigator.clipboard.writeText(paste.content);
@@ -72,7 +123,6 @@ export default function PasteViewer({ paste }: PasteViewerProps) {
     () => (paste.content.trim() ? paste.content.trim().split(/\s+/).length : 0),
     [paste.content],
   );
-  const contentIsJson = useMemo(() => isJson(paste.content), [paste.content, isJson]);
 
   return (
     <>
@@ -101,15 +151,15 @@ export default function PasteViewer({ paste }: PasteViewerProps) {
           onScroll={handleContentScroll}
           className="flex-1 overflow-auto p-4 pb-6"
         >
-          {contentIsJson ? (
+          {language ? (
             <Refractor
-              language="json"
-              value={prettifyJson(paste.content)}
+              language={language}
+              value={displayContent}
               className="!bg-transparent whitespace-pre-wrap break-words text-[13px] leading-6 !p-0 !m-0"
             />
           ) : (
             <pre className="whitespace-pre-wrap break-words text-[13px] leading-6 text-zinc-300">
-              {paste.content}
+              {displayContent}
             </pre>
           )}
         </div>
@@ -118,7 +168,7 @@ export default function PasteViewer({ paste }: PasteViewerProps) {
       <Footer
         createdAt={paste.createdAt}
         expiresAt={paste.expiresAt}
-        contentType={contentIsJson ? "json" : "plain text"}
+        contentType={language ?? "plain text"}
       />
     </>
   );

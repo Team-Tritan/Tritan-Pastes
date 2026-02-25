@@ -7,6 +7,48 @@ import Header from "@/components/Header";
 import LineNumbers from "./LineNumbers";
 import Toast from "./Toast";
 
+const EXT_TO_LANGUAGE: Record<string, string> = {
+  js: "javascript",
+  mjs: "javascript",
+  cjs: "javascript",
+  jsx: "jsx",
+  ts: "typescript",
+  mts: "typescript",
+  cts: "typescript",
+  tsx: "tsx",
+  json: "json",
+  py: "python",
+  rb: "ruby",
+  sh: "bash",
+  bash: "bash",
+  zsh: "bash",
+  css: "css",
+  html: "markup",
+  htm: "markup",
+  xml: "markup",
+  svg: "markup",
+  md: "markdown",
+  sql: "sql",
+  yaml: "yaml",
+  yml: "yaml",
+  toml: "toml",
+  rs: "rust",
+  go: "go",
+  java: "java",
+  c: "c",
+  cpp: "cpp",
+  cc: "cpp",
+  cs: "csharp",
+  php: "php",
+  swift: "swift",
+  kt: "kotlin",
+};
+
+function extToLanguage(filename: string): string | null {
+  const ext = filename.split(".").pop()?.toLowerCase();
+  return ext ? (EXT_TO_LANGUAGE[ext] ?? null) : null;
+}
+
 const PLACEHOLDER = "paste something here...";
 
 export default function Editor() {
@@ -59,6 +101,7 @@ export default function Editor() {
           password: password || null,
           expiresIn: expirationTime ? new Date(expirationTime).toISOString() : null,
           expireAfterViewing,
+          language: fileName ? extToLanguage(fileName) : null,
         });
 
         if (res.error) {
@@ -70,7 +113,7 @@ export default function Editor() {
         setError(err instanceof Error ? err.message : "Failed to create paste");
       }
     });
-  }, [code, password, expirationTime, expireAfterViewing]);
+  }, [code, password, expirationTime, expireAfterViewing, fileName]);
 
   const copyToClipboard = useCallback(() => {
     navigator.clipboard.writeText(generatedLink);

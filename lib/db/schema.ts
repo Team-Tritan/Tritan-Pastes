@@ -5,6 +5,7 @@ export const pastes = pgTable("pastes", {
   content: text("content").notNull(),
   passwordHash: text("password_hash"),
   hasPassword: boolean("has_password").notNull().default(false),
+  language: text("language"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   expiresAt: timestamp("expires_at"),
 });

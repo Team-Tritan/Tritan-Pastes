@@ -11,8 +11,9 @@ export async function createPasteAction(data: {
   password?: string | null;
   expiresIn?: string | null;
   expireAfterViewing?: boolean;
+  language?: string | null;
 }) {
-  const { content, password, expiresIn } = data;
+  const { content, password, expiresIn, language } = data;
 
   if (!content || typeof content !== "string") {
     return { error: "Content is required" };
@@ -36,6 +37,7 @@ export async function createPasteAction(data: {
       content: encryptedContent,
       passwordHash,
       hasPassword,
+      language: language ?? null,
       expiresAt,
     });
 
