@@ -84,7 +84,7 @@ export default function Editor() {
 
   useHotkey("Mod+S", (event) => {
     event.preventDefault();
-    handleSubmit();
+    if (!isPending) handleSubmit();
   });
 
   useHotkey("Mod+C", (event) => {
