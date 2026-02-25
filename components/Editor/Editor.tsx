@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback, useMemo, startTransition } from "react";
+import { useState, useRef, useCallback, useMemo, useTransition } from "react";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { createPasteAction } from "@/app/actions";
 import Header from "@/components/Header";
@@ -62,6 +62,7 @@ export default function Editor() {
   const [optionsOpen, setOptionsOpen] = useState<boolean>(false);
   const [fileName, setFileName] = useState<string>("");
 
+  const [isPending, startTransition] = useTransition();
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const dragCounterRef = useRef<number>(0);
 
@@ -223,6 +224,7 @@ export default function Editor() {
         onToggleExpireAfterViewing={toggleExpireAfterViewing}
         onFileImport={handleFileImport}
         onSubmit={handleSubmit}
+        isSubmitting={isPending}
       />
 
       <div className="flex flex-1 overflow-hidden">

@@ -21,6 +21,7 @@ interface EditorHeaderProps {
   onToggleExpireAfterViewing: () => void;
   onFileImport: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: () => void;
+  isSubmitting: boolean;
 }
 
 interface ViewerHeaderProps {
@@ -55,6 +56,7 @@ export default function Header(props: HeaderProps) {
       onToggleExpireAfterViewing,
       onFileImport,
       onSubmit,
+      isSubmitting,
     } = props;
 
     const hasActiveOptions = password || expirationTime || expireAfterViewing;
@@ -124,10 +126,15 @@ export default function Header(props: HeaderProps) {
           <button
             type="button"
             onClick={onSubmit}
-            className="flex items-center gap-1.5 bg-zinc-200 px-4 py-1.5 text-xs font-medium text-zinc-900 transition-colors hover:bg-zinc-300"
+            disabled={isSubmitting}
+            className="flex items-center gap-1.5 bg-zinc-200 px-4 py-1.5 text-xs font-medium text-zinc-900 transition-colors hover:bg-zinc-300 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <UploadCloud className="h-3.5 w-3.5" />
-            create
+            {isSubmitting ? (
+              <span className="h-3.5 w-3.5 animate-spin rounded-full border border-zinc-600 border-t-zinc-900" />
+            ) : (
+              <UploadCloud className="h-3.5 w-3.5" />
+            )}
+            {isSubmitting ? "creating..." : "create"}
           </button>
         </div>
       </header>
