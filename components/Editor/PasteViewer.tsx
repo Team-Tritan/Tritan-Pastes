@@ -2,21 +2,16 @@
 
 import { useState, useRef, useCallback, useMemo } from "react";
 import { useHotkey } from "@tanstack/react-hotkeys";
+import { Refractor, registerLanguage } from "react-refractor";
+import json from "refractor/json";
 import { Paste } from "@/lib/types/paste";
 import Header from "@/components/Header";
 import Footer from "../Footer";
 
+registerLanguage(json);
+
 interface PasteViewerProps {
   paste: Paste;
-}
-
-function highlightJson(jsonStr: string): string {
-  return jsonStr
-    .replace(/"(.*?)":/g, `<span class="text-blue-400">"$1"</span>:`)
-    .replace(/: "(.*?)"/g, `: <span class="text-green-400">"$1"</span>`)
-    .replace(/: (\d+)/g, `: <span class="text-orange-400">$1</span>`)
-    .replace(/: (true|false)/g, `: <span class="text-purple-400">$1</span>`)
-    .replace(/: null/g, `: <span class="text-zinc-500">null</span>`);
 }
 
 export default function PasteViewer({ paste }: PasteViewerProps) {
@@ -107,13 +102,11 @@ export default function PasteViewer({ paste }: PasteViewerProps) {
           className="flex-1 overflow-auto p-4 pb-6"
         >
           {contentIsJson ? (
-            <pre className="whitespace-pre-wrap break-words text-[13px] leading-6 text-zinc-300">
-              <code
-                dangerouslySetInnerHTML={{
-                  __html: highlightJson(prettifyJson(paste.content)),
-                }}
-              />
-            </pre>
+            <Refractor
+              language="json"
+              value={prettifyJson(paste.content)}
+              className="!bg-transparent whitespace-pre-wrap break-words text-[13px] leading-6 !p-0 !m-0"
+            />
           ) : (
             <pre className="whitespace-pre-wrap break-words text-[13px] leading-6 text-zinc-300">
               {paste.content}
