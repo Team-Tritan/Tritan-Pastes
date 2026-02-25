@@ -63,26 +63,16 @@ export default function PasteViewer({ paste }: PasteViewerProps) {
   const lineNumbersRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const tryParseJson = useCallback((str: string) => {
-    try {
-      return JSON.stringify(JSON.parse(str), null, 2);
-    } catch {
-      return null;
+  const displayContent = useMemo(() => {
+    if (paste.language === "json") {
+      try {
+        return JSON.stringify(JSON.parse(paste.content), null, 2);
+      } catch {
+        return paste.content;
+      }
     }
-  }, []);
-
-  // Resolve language: stored value wins; fall back to JSON detection for legacy pastes
-  const { language, displayContent } = useMemo(() => {
-    if (paste.language) {
-      const pretty = paste.language === "json" ? tryParseJson(paste.content) : null;
-      return { language: paste.language, displayContent: pretty ?? paste.content };
-    }
-    const pretty = tryParseJson(paste.content);
-    if (pretty !== null) {
-      return { language: "json", displayContent: pretty };
-    }
-    return { language: null, displayContent: paste.content };
-  }, [paste.language, paste.content, tryParseJson]);
+    return paste.content;
+  }, [paste.language, paste.content]);
 
   const copyToClipboard = useCallback(() => {
     navigator.clipboard.writeText(paste.content);
@@ -151,9 +141,9 @@ export default function PasteViewer({ paste }: PasteViewerProps) {
           onScroll={handleContentScroll}
           className="flex-1 overflow-auto p-4 pb-6"
         >
-          {language ? (
+          {paste.language ? (
             <Refractor
-              language={language}
+              language={paste.language}
               value={displayContent}
               className="!bg-transparent whitespace-pre-wrap break-words text-[13px] leading-6 !p-0 !m-0"
             />
@@ -168,7 +158,7 @@ export default function PasteViewer({ paste }: PasteViewerProps) {
       <Footer
         createdAt={paste.createdAt}
         expiresAt={paste.expiresAt}
-        contentType={language ?? "plain text"}
+        contentType={paste.language ?? "plain text"}
       />
     </>
   );
